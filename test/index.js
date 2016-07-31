@@ -64,7 +64,7 @@ describe('REST API', function () {
         it('should respond 400 if "X-Client-Timestamp" is not an integer number', function (done) {
             request(ts.httpServer)
                 .get('/')
-                .set('X-Client-Timestamp', 'not-an-integer')
+                .set('X-Client-Timestamp', 'not an integer')
                 .expect(400, done);
         });
 
