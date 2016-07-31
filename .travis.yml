@@ -6,7 +6,7 @@ cache:
 notifications:
   email: false
 node_js:
-  - "6.0.x"
+  - "6.0.0"
   - "node"
 before_install:
   - npm install -g npm@^2.0.0
