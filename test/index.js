@@ -1,51 +1,51 @@
 var expect = require('chai').expect;
 var request = require('supertest');
 
-var Timeserver = require('../src/index');
+var Server = require('../src/index');
 
-const testPort = process.env.TESTPORT || 2355;
+const testingPort = process.env.TESTING_PORT || 5579;
 
-describe('Timeserver', function () {
+describe('ClockServer', function () {
 
-    it('should construct Timeserver object', function () {
-        var ts = Timeserver();
-        expect(ts).to.be.an('object');
+    it('should construct ClockServer object', function () {
+        var srv = Server();
+        expect(srv).to.be.an('object');
     });
 
     it('should initialize httpServer object', function () {
-        var ts = Timeserver();
-        expect(ts.httpServer).to.be.an('object');
+        var srv = Server();
+        expect(srv.httpServer).to.be.an('object');
     });
 
     it('should allow listening and closing', function (done) {
-        var ts = Timeserver();
-        ts.listen(testPort);
-        request(ts.httpServer)
+        var srv = Server();
+        srv.listen(testingPort);
+        request(srv.httpServer)
             .get('/')
             .end(function (err) {
                 expect(err).to.be.null;
-                ts.on('close', done);
-                ts.close();
+                srv.on('close', done);
+                srv.close();
             });
     });
 });
 
 describe('REST API', function () {
-    var ts;
+    var srv;
 
     beforeEach(function () {
-        ts = Timeserver();
-        ts.listen(testPort);
+        srv = Server();
+        srv.listen(testingPort);
     });
 
     afterEach(function (done) {
-        ts.on('close', done);
-        ts.close();
+        srv.on('close', done);
+        srv.close();
     });
 
     describe('POST /', function () {
         it('should respond 405 - method not allowed', function (done) {
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .post('/')
                 .expect(405, done);
         });
@@ -53,20 +53,20 @@ describe('REST API', function () {
 
     describe('GET /', function () {
         it('should respond 400 if no header "X-Client-Timestamp" passed', function (done) {
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .get('/')
                 .expect(400, done);
         });
 
         it('should respond 400 if "X-Client-Timestamp" is not an integer number', function (done) {
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .get('/')
                 .set('X-Client-Timestamp', 'not an integer')
                 .expect(400, done);
         });
 
         it('should respond 200 with "X-Client-Timestamp" header is set to a number', function (done) {
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .get('/')
                 .set('X-Client-Timestamp', '123456')
                 .expect(200, done);
@@ -75,7 +75,7 @@ describe('REST API', function () {
         var testTimestamp = '123456';
 
         it('should respond with a string that starts from original timestamp', function (done) {
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .get('/')
                 .set('X-Client-Timestamp', testTimestamp)
                 .end(function (err, response) {
@@ -86,7 +86,7 @@ describe('REST API', function () {
         });
 
         it('should respond with another timestamp after original, comma-separated', function (done) {
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .get('/')
                 .set('X-Client-Timestamp', testTimestamp)
                 .end(function (err, response) {
@@ -101,7 +101,7 @@ describe('REST API', function () {
 
         it('should respond with timestamp greater than timestamp of request initiation', function (done) {
             var initiationTimestamp = Date.now();
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .get('/')
                 .set('X-Client-Timestamp', "" + initiationTimestamp)
                 .end(function (err, response) {
@@ -115,7 +115,7 @@ describe('REST API', function () {
 
         it('should respond with timestamp within 10 milliseconds form originating time', function (done) {
             var initiationTimestamp = Date.now();
-            request(ts.httpServer)
+            request(srv.httpServer)
                 .get('/')
                 .set('X-Client-Timestamp', "" + initiationTimestamp)
                 .end(function (err, response) {

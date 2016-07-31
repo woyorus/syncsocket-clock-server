@@ -2,12 +2,12 @@ var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 
-module.exports = Timeserver;
+module.exports = ClockServer;
 
-util.inherits(Timeserver, EventEmitter);
+util.inherits(ClockServer, EventEmitter);
 
-function Timeserver() {
-    if (!(this instanceof Timeserver)) return new Timeserver();
+function ClockServer() {
+    if (!(this instanceof ClockServer)) return new ClockServer();
     this.httpServer = http.createServer(function (request, response) {
         if (request.method !== 'GET') {
             respondWith(405, response);
@@ -28,15 +28,15 @@ function Timeserver() {
     this.httpServer.on('close', () => this.onclose());
 }
 
-Timeserver.prototype.listen = function (port) {
+ClockServer.prototype.listen = function (port) {
     this.httpServer.listen(port);
 };
 
-Timeserver.prototype.close = function () {
+ClockServer.prototype.close = function () {
     this.httpServer.close();
 };
 
-Timeserver.prototype.onclose = function () {
+ClockServer.prototype.onclose = function () {
     this.emit('close')
 };
 
