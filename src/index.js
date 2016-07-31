@@ -1,5 +1,3 @@
-
-
 var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
