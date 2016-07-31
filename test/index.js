@@ -1,14 +1,11 @@
 var expect = require('chai').expect;
 var request = require('supertest');
+
 var Timeserver = require('../src/index');
 
 const testPort = process.env.TESTPORT || 2355;
 
 describe('Timeserver', function () {
-
-    it('should be a function', function () {
-        expect(Timeserver).to.be.a('function');
-    });
 
     it('should construct Timeserver object', function () {
         var ts = Timeserver();
