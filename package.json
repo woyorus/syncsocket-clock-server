@@ -1,0 +1,42 @@
+{
+  "name": "syncsocket-clock-server",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "description": "Probabilistic clock synchronization server",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha --reporter spec -w",
+    "test:single": "mocha --reporter spec",
+    "cover": "istanbul cover _mocha -- -R spec test/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woyorus/syncsocket-clock-server.git"
+  },
+  "keywords": [
+    "time",
+    "timeserver",
+    "clock",
+    "clocks",
+    "sync",
+    "synchronization",
+    "Cristian",
+    "Cristians",
+    "NTP",
+    "synchronize"
+  ],
+  "author": "Kirill Kravinsky <woyorus@gmail.com> (http://github.com/woyorus)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/woyorus/syncsocket-clock-server/issues"
+  },
+  "homepage": "https://github.com/woyorus/syncsocket-clock-server#readme",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "istanbul": "0.4.4",
+    "mocha": "2.5.3",
+    "supertest": "2.0.0"
+  }
+}
