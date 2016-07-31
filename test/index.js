@@ -3,7 +3,8 @@ var request = require('supertest');
 
 var Server = require('../src/index');
 
-const testingPort = process.env.TESTING_PORT || 5579;
+const defaultPort = 5579;
+const testingPort = process.env.TESTING_PORT || 8888;
 
 describe('ClockServer', function () {
 
@@ -22,6 +23,18 @@ describe('ClockServer', function () {
         srv.listen(testingPort);
         request(srv.httpServer)
             .get('/')
+            .end(function (err) {
+                expect(err).to.be.null;
+                srv.on('close', done);
+                srv.close();
+            });
+    });
+
+    it('should by default listen on port ' + defaultPort, function (done) {
+        var srv = Server();
+        srv.listen(); // no port passed
+        var req = request('http://localhost:' + defaultPort + '/');
+        req.get('/')
             .end(function (err) {
                 expect(err).to.be.null;
                 srv.on('close', done);

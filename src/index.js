@@ -4,6 +4,8 @@ var util = require('util');
 
 module.exports = ClockServer;
 
+const defaultPort = 5579;
+
 util.inherits(ClockServer, EventEmitter);
 
 function ClockServer() {
@@ -28,7 +30,7 @@ function ClockServer() {
     this.httpServer.on('close', () => this.onclose());
 }
 
-ClockServer.prototype.listen = function (port) {
+ClockServer.prototype.listen = function (port = defaultPort) {
     this.httpServer.listen(port);
 };
 
