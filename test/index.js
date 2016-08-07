@@ -1,7 +1,7 @@
-var expect = require('chai').expect;
-var request = require('supertest');
+const expect = require('chai').expect;
+const request = require('supertest');
 
-var Server = require('../src/index');
+const Server = require('../src/index');
 
 const defaultPort = 5579;
 const testingPort = process.env.TESTING_PORT || 8888;

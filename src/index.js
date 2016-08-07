@@ -1,6 +1,6 @@
-var http = require('http');
-var EventEmitter = require('events').EventEmitter;
-var util = require('util');
+const http = require('http');
+const EventEmitter = require('events').EventEmitter;
+const util = require('util');
 
 module.exports = ClockServer;
 
