@@ -8,10 +8,20 @@ const defaultPort = 5579;
 
 util.inherits(ClockServer, EventEmitter);
 
+var corsHeaders = {
+    'Content-Type': 'text/plain',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, x-client-timestamp'
+};
+
 function ClockServer() {
     if (!(this instanceof ClockServer)) return new ClockServer();
     this.httpServer = http.createServer(function (request, response) {
-        if (request.method !== 'GET') {
+        if (request.method === 'OPTIONS') {
+            respondWith(200, response);
+            return;
+        } else if (request.method !== 'GET') {
             respondWith(405, response);
             return;
         }
@@ -23,8 +33,7 @@ function ClockServer() {
             return;
         }
 
-        response.writeHead(200, { 'Content-Type': 'text/plain' } );
-        response.writeHead(200, { 'Access-Control-Allow-Origin': '*'} );
+        response.writeHead(200, corsHeaders);
         response.write("" + clientTimestamp + "," + Date.now());
         response.end();
     });
@@ -44,6 +53,6 @@ ClockServer.prototype.onclose = function () {
 };
 
 function respondWith(code, response) {
-    response.writeHead(code);
+    response.writeHead(code, corsHeaders);
     response.end();
 }
