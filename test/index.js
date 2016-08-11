@@ -85,6 +85,13 @@ describe('REST API', function () {
                 .expect(200, done);
         });
 
+        it('should include CORS header', function (done) {
+            request(srv.httpServer)
+                .get('/')
+                .set('X-Client-Timestamp', '123456')
+                .expect('Access-Control-Allow-Origin', '*', done)
+        });
+
         var testTimestamp = '123456';
 
         it('should respond with a string that starts from original timestamp', function (done) {

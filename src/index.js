@@ -24,6 +24,7 @@ function ClockServer() {
         }
 
         response.writeHead(200, { 'Content-Type': 'text/plain' } );
+        response.writeHead(200, { 'Access-Control-Allow-Origin': '*'} );
         response.write("" + clientTimestamp + "," + Date.now());
         response.end();
     });
