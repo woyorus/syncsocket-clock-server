@@ -4,7 +4,7 @@ const util = require('util');
 
 module.exports = ClockServer;
 
-const defaultPort = 5579;
+const port = parseInt(process.env.PORT) || 5579;
 
 util.inherits(ClockServer, EventEmitter);
 
@@ -40,8 +40,8 @@ function ClockServer() {
     this.httpServer.on('close', () => this.onclose());
 }
 
-ClockServer.prototype.listen = function (port = defaultPort) {
-    this.httpServer.listen(port);
+ClockServer.prototype.listen = function (p = port) {
+    this.httpServer.listen(p);
 };
 
 ClockServer.prototype.close = function () {
@@ -55,4 +55,10 @@ ClockServer.prototype.onclose = function () {
 function respondWith(code, response) {
     response.writeHead(code, corsHeaders);
     response.end();
+}
+
+if (process.env.STANDALONE) {
+  console.log(" [*] running standalone...");
+  var server = new ClockServer();
+  server.listen();
 }
