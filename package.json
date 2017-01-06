@@ -1,12 +1,13 @@
 {
   "name": "syncsocket-clock-server",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "engines": {
     "node": ">=6.0.0"
   },
   "description": "Probabilistic clock synchronization server",
   "main": "src/index.js",
   "scripts": {
+    "start": "STANDALONE=1 node src/index.js",
     "test": "mocha --reporter spec -w",
     "test:single": "mocha --reporter spec",
     "cover": "istanbul cover _mocha -- -R spec test/*"
