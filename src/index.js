@@ -58,7 +58,7 @@ function respondWith(code, response) {
 }
 
 if (process.env.STANDALONE) {
-  console.log(" [*] running standalone...");
+  console.log(" [*] running standalone on \":%d\"", port);
   var server = new ClockServer();
   server.listen();
 }
